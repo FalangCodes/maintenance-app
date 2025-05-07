@@ -38,7 +38,7 @@ export default function NavBar() {
         )}
 
         {pathname === "/dashboard" && isAuthenticated && (
-          <button onClick={handleSignOut} className={styles.loginButton}>
+          <button onClick={handleSignOut} className={styles.logoutButton}>
             Sign Out
           </button>
         )}

@@ -13,24 +13,30 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+    setLoading(true);
+  
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard"); 
+      router.push("/dashboard");
     } catch (error) {
       setError("Invalid email or password");
       console.error("Login error:", error);
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className={styles.container}>
       <NavBar />
       <h2 className={styles.header}>Admin Login</h2>
+      {loading && <p className={styles.loadingMessage}>Loading...</p>}
       <form onSubmit={handleLogin}>
         <input
           type="email"

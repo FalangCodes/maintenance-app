@@ -56,3 +56,13 @@
 .submitButton:hover {
   background-color: rgb(12, 170, 51);
 }
+
+@media (max-width: 480px) {
+  .submitButton {
+    background-color: rgb(12, 170, 51);
+  }
+
+  .formContainer {
+    width: 80%;
+  }
+}
