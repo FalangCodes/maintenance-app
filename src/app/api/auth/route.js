@@ -1,8 +1,9 @@
-import NextAuth from "next-auth";
+import { auth } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
+import { NextResponse } from "next/server";
 
-export default NextAuth({
+export const authConfig = {
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID,
@@ -13,9 +14,12 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }),
   ],
-  // Optional: Add more config (pages, callbacks, etc.)
-});
+};
 
-const handler = NextAuth(authOptions);
+export const GET = async (req) => {
+  return auth(req, authConfig);
+};
 
-export { handler as GET, handler as POST };
+export const POST = async (req) => {
+  return auth(req, authConfig);
+};
