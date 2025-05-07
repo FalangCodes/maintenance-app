@@ -1,20 +1,20 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import FacebookProvider from "next-auth/providers/facebook";
+import EmailProvider from "next-auth/providers/email";
 
-export const authOptions = {
+export default NextAuth({
   providers: [
-    Providers.Facebook({
+    FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
-    // Add other providers, for example Firebase
-    Providers.Email({
+    EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
   ],
-  // Any other NextAuth configuration you need
-};
+  // Optional: Add more config (pages, callbacks, etc.)
+});
 
 const handler = NextAuth(authOptions);
 
