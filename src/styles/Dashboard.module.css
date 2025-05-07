@@ -1,0 +1,53 @@
+.container {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .groupSection {
+    margin-top: 30px;
+  }
+  
+  
+  .logoutButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .logoutButton:hover {
+    background-color: darkred;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: #f4f4f4;
+  }
+  
+  .doneButton {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .doneButton:hover {
+    background-color: darkgreen;
+  }
+  

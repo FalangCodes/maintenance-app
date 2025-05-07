@@ -1,0 +1,47 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(26, 4, 107, 0.897);
+    padding: 0px 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .logo {
+    height: 35px;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .loginButton {
+    background-color: rgb(231, 180, 10);
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-right: 45px;
+  }
+  
+  .loginButton:hover {
+    background-color: rgba(231, 179, 10, 0.904);
+    color: white;
+  }
+  
+  .spacer {
+    height: 70px; /* Prevent content from being hidden under navbar */
+  }
+  
