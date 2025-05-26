@@ -6,7 +6,6 @@ export default async function handler(req, res) {
     try {
       const { description, issueType, date } = req.body;
 
-      // Save to Firebase (or your preferred database)
       const docRef = await addDoc(collection(db, 'maintenance_requests'), {
         description,
         issueType,

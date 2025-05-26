@@ -28,7 +28,7 @@ export default function NavBar() {
     <>
       <nav className={styles.navbar}>
         <Link href="/" className={styles.title}>
-          <h3>UOB Maintenance Logging</h3>
+          <h3>Off-campus Maintenance Reports</h3>
         </Link>
 
         {pathname === "/" && !isAuthenticated && (

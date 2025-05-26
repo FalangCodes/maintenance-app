@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [logsByType, setLogsByType] = useState({});
   const router = useRouter();
 
-  const ISSUE_TYPES = ["WI-FI", "Laundry", "Plumbing", "Electrical", "Cleaning Services"];
+  const ISSUE_TYPES = ["WI-FI", "Laundry", "Plumbing", "Electrical", "Cleaning Services", "Construction"];
 
   const [totalLogs, setTotalLogs] = useState(0);
   const [resolvedLogs, setResolvedLogs] = useState(0);
@@ -72,6 +72,8 @@ export default function Dashboard() {
       console.error("Error updating status:", error);
     }
   };
+
+  
 
   return (
     <div className={styles.container}>

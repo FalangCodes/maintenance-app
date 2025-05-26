@@ -57,10 +57,12 @@ export default function MaintenanceForm() {
         onChange={(e) => setIssueType(e.target.value)}
       >
         <option value="WI-FI">WI-FI</option>
-        <option value="Laundry">Laundry</option>
+        {/*<option value="Laundry">Laundry</option>
         <option value="Plumbing">Plumbing</option>
         <option value="Electrical">Electrical</option>
         <option value="Cleaning Services">Cleaning</option>
+        */}
+        <option value="Construction">Construction</option>
       </select>
       <button className={styles.submitButton} onClick={submitRequest}>
         Submit
