@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { getDocs } from "firebase/firestore";
 import styles from "../../styles/Dashboard.module.css";
 import NavBar from "@/components/NavBar";
 
@@ -73,7 +76,49 @@ export default function Dashboard() {
     }
   };
 
-  
+  const exportToExcel = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "Maintenance_Logs"));
+    
+    const logs = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        roomNumber: data.roomNumber || "N/A",
+        description: data.description || "N/A",
+        dateReported: data.dateReported?.seconds
+          ? new Date(data.dateReported.seconds * 1000).toLocaleString()
+          : "N/A",
+        issueType: data.issueType || "N/A",
+        status: data.status || "N/A",
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(logs);
+
+    // Add column widths
+    worksheet["!cols"] = [
+      { wch: 15 }, // roomNumber
+      { wch: 40 }, // description
+      { wch: 22 }, // dateReported
+      { wch: 20 }, // issueType
+      { wch: 12 }, // status
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Maintenance Logs");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(blob, "maintenance_logs.xlsx");
+  } catch (error) {
+    console.error("Error exporting Excel:", error);
+  }
+  };
+
+
 
   return (
     <div className={styles.container}>
@@ -82,8 +127,20 @@ export default function Dashboard() {
         <>
           <h2>Welcome, {user.email}</h2>
           <p>
-            Total Logs: {totalLogs} | {resolvedLogs} Resolved, {pendingLogs} Pending
-          </p>
+              Total Logs: {totalLogs} | {resolvedLogs} Resolved, {pendingLogs} Pending |{" "}
+              <span
+                onClick={exportToExcel}
+                style={{
+                  color: "#0070f3",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  marginLeft: "8px"
+                }}
+              >
+                Download Logs (Excel)
+              </span>
+            </p>
+
 
           {ISSUE_TYPES.map((type) => (
             logsByType[type]?.length > 0 && (
