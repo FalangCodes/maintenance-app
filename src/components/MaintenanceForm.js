@@ -37,7 +37,7 @@ export default function MaintenanceForm() {
 
   return (
     <div className={styles.formContainer}>
-      <h2>Submit a Maintenance Request</h2>
+      <h2>Submit Maintenance Issue:</h2>
       <input
         type="text"
         placeholder="Room Number"
