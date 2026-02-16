@@ -1,62 +1,109 @@
 "use client";
-import NavBar from "@/components/NavBar";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import styles from "../../styles/Login.module.css";
+import { auth } from "../../firebase"; // Adjust this path if your firebase.js is located elsewhere
+import NavBar from "@/components/NavBar";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-
-export default function Login() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
-  
+    setIsLoading(true);
+
     try {
+      // 1. Authenticate with Firebase
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
-    } catch (error) {
-      setError("Invalid email or password");
-      console.error("Login error:", error);
-      setLoading(false);
+      
+      // 2. Format the email to lowercase just to be safe
+      const userEmail = email.toLowerCase();
+
+      // 3. RBAC Domain Routing
+      if (userEmail.endsWith("@risestudentliving.com")) {
+        // It's an admin/staff member
+        router.push("/admin");
+      } else if (userEmail.endsWith("@student.spu.ac.za")) {
+        // It's a resident
+        router.push("/student");
+      } else {
+        // Fallback for any other valid user type, or force them to the student portal
+        router.push("/student");
+      }
+
+    } catch (err) {
+      setError("Failed to sign in. Please check your credentials.");
+      console.error("Auth Error:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
-  
 
   return (
-    <div className={styles.container}>
-      <NavBar />
-      <h2 className={styles.header}>Admin Login</h2>
-      {loading && <p className={styles.loadingMessage}>Loading...</p>}
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          className={styles.inputField}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className={styles.inputField}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" className={styles.loginButton}>Login</button>
-        {error && <p className={styles.errorMessage}>{error}</p>}
-      </form>
+    <div>
+      <NavBar/>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold tracking-tight">
+              Residence Portal
+            </CardTitle>
+            <CardDescription>
+              Enter your student email and password to log in
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Student Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="student@domain.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              
+              {error && (
+                <p className="text-sm font-medium text-red-500">{error}</p>
+              )}
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Signing in..." : "Sign In"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
